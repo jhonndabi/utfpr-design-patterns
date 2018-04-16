@@ -2,12 +2,28 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
 
+## Install npm - Windows
+Get the latest lts version on https://nodejs.org/en/#download
+
+## Install npm through nvm - Linux
+Run `curl https://raw.githubusercontent.com/creationix/nvm/v0.33.9/install.sh | bash`
+Run `source ~/.profile`
+Run `nvm install --lts`
+Run `nvm use --lts`
+
 ## Install angular cli
 Run `npm install -g @angular/cli@1.7.4`
+To check if everything is ok, run the command below and check if angular cli version is 1.7.4
+Run `ng --version`
+
+## Install project dependencies
+Run `npm i`
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+<hr />
 
 ## Code scaffolding
 
