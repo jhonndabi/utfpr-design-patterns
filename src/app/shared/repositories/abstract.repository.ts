@@ -3,49 +3,79 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { CrudRepository } from './crud-repository.interface';
 import { environment } from '../../../environments/environment';
 import { MediaType } from './media-type';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-type': MediaType.APPLICATION_JSON,
-    'Accept': MediaType.APPLICATION_JSON
-  })
+const headers = {
+  'Content-type': MediaType.APPLICATION_JSON,
+  'Accept': MediaType.APPLICATION_JSON,
 };
 
+const params = {};
+
 @Injectable()
-export class AbstractRepository<T> implements CrudRepository<T> {
-  private url;
+export class AbstractRepository<T> {
+  apiEndpoint: string;
+  resource: string;
+  headers: {} = headers;
+  params: {} = params;
 
   constructor(
-    private http: HttpClient,
-    private resource: string
+    protected http: HttpClient
   ) {
-    this.url = `${environment.apiEndpoint}/${resource}`;
+    this.setApiEndpoint(environment.apiEndpoint);
+  }
+
+  setApiEndpoint (apiEndpoint: string): void {
+    this.apiEndpoint = apiEndpoint;
+  }
+
+  setResource(resource: string): void {
+    this.resource = resource;
+  }
+
+  setPaginationParams (perPage: number = 2, page: number = 1, order: string = 'created_at', sort: string = 'DESC'): void {
+    this.params['per_page'] = perPage.toString();
+    this.params['page'] = page.toString();
+    this.params['order'] = order;
+    this.params['sort'] = sort;
+  }
+
+  get resourceEndpoint(): string {
+    return `${this.apiEndpoint}/${this.resource}`;
+  }
+
+  get options(): {} {
+    return {
+      headers: new HttpHeaders(this.headers),
+      params: new HttpParams({fromObject: this.params}),
+    };
   }
 
   private transform(model: T) {
     return JSON.stringify(model);
   }
 
-  findAll(): Observable<T[]> {
-    return this.http.get<T[]>(this.url, httpOptions);
+  findAll(order: string = 'created_at', sort: string = 'DESC'): Observable<T[]> {
+    this.params['order'] = order;
+    this.params['sort'] = sort;
+
+    return this.http.get<T[]>(this.resourceEndpoint, this.options);
   }
 
-  find(id: any): Observable<T> {
-    return this.http.get<T>(`${this.url}/${id}`, httpOptions);
+  find(id: number | string): Observable<T> {
+    return this.http.get<T>(`${this.resourceEndpoint}/${id}`, this.options);
   }
 
-  create(model: T): Observable<T> {
-    return this.http.post<T>(this.url, this.transform(model), httpOptions);
+  create(entity: T): Observable<T> {
+    return this.http.post<T>(this.resourceEndpoint, this.transform(entity), this.options);
   }
 
-  update(model: T, id: any): Observable<T> {
-    return this.http.put<T>(`${this.url}/${id}`, this.transform(model), httpOptions);
+  update(id: number | string, entity: T): Observable<any> {
+    return this.http.put(`${this.resourceEndpoint}/${id}`, this.transform(entity), this.options);
   }
 
-  remove(id: any): Observable<any> {
-    return this.http.delete(`${this.url}/${id}`, httpOptions);
+  delete(id: number | string): Observable<any> {
+    return this.http.delete(`${this.resourceEndpoint}/${id}`, this.options);
   }
 }

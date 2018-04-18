@@ -4,13 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { AbstractRepository } from './abstract.repository';
 import { Product } from '../../models/product';
 
-const resource: string = 'products';
+const resource = 'products';
 
 @Injectable()
 export class ProductRepository extends AbstractRepository<Product> {
-
-  constructor(http: HttpClient) {
-    super(http, resource);
-  }
-
+  resource: string = resource;
 }
