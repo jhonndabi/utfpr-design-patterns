@@ -1,3 +1,9 @@
-<p>
-  product-detail works!
-</p>
+<h3>Product: </h3>
+
+<a [routerLink]="['/products']">Go to product list.</a>
+
+<div *ngIf="product">
+  <p>Id: {{ product.id }}</p>
+  <p>Name: {{ product.name | uppercase }}</p>
+  <p>Price: {{ product.price | currency:'BRL' }}</p>
+</div>

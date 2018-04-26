@@ -4,10 +4,8 @@ import { NgModule } from '@angular/core';
 import { ProductModule } from './product/product.module';
 
 const routes: Routes = [
-    {
-        path: 'products',
-        loadChildren: () => ProductModule,
-    },
+    { path: '', redirectTo: '/products', pathMatch: 'full' },
+    { path: 'products', loadChildren: () => ProductModule },
 ];
 @NgModule({
     imports: [

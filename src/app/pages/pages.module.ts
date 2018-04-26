@@ -3,16 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { ProductModule } from './product/product.module';
 import { PagesRoutingModule } from './pages-routing.module';
+import { ErrorsModule } from './errors/errors.module';
 
 @NgModule({
   imports: [
     CommonModule,
     PagesRoutingModule,
-    ProductModule
+    ProductModule,
+    ErrorsModule
   ],
   declarations: [],
   exports: [
-    ProductModule
+    ProductModule,
+    ErrorsModule
   ]
 })
 export class PagesModule { }

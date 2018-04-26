@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+
 import { ProductRepository } from '../../../shared/repositories/product-repository';
 import { Product } from '../../../models/product';
 
@@ -8,12 +10,43 @@ import { Product } from '../../../models/product';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  private products: Product[];
+  products: Product[];
 
-  constructor(private productRepository: ProductRepository) { }
+  constructor(
+    private productRepository: ProductRepository,
+    private toast: ToastrService
+  ) { }
 
   ngOnInit() {
-    this.productRepository.findAll();
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.productRepository.findAll().subscribe(
+      products => {
+        this.products = products;
+      },
+      error => {
+        //
+      },
+      () => {
+        //
+      }
+    );
+  }
+
+  delete(id: number) {
+    this.productRepository.delete(id).subscribe(
+      response => {
+        this.toast.success('The product was deleted!');
+      },
+      error => {
+        this.toast.success('Ops, something went wrong. Try again later!');
+      },
+      () => {
+        //
+      }
+    );
   }
 
 }

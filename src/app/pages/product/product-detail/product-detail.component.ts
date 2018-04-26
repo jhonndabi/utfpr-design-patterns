@@ -10,7 +10,7 @@ import { ProductRepository } from '../../../shared/repositories/product-reposito
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
-  protected product: Product;
+  product: Product;
   private routeSubscription;
 
   constructor(
@@ -28,14 +28,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   private loadProduct(id: number) {
     this.productRepository.find(id).subscribe(
       product => {
-        console.log(product);
-        // this.product = product;
+        this.product = product;
       },
       error => {
-        // console.log(error);
+        //
       },
       () => {
-        // console.log('complete');
+        //
       }
     );
   }
