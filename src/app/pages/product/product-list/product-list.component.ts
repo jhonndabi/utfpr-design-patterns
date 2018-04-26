@@ -39,6 +39,7 @@ export class ProductListComponent implements OnInit {
     this.productRepository.delete(id).subscribe(
       response => {
         this.toast.success('The product was deleted!');
+        this.loadProducts();
       },
       error => {
         this.toast.success('Ops, something went wrong. Try again later!');

@@ -36,7 +36,7 @@ export class ProductFormComponent extends AbstractFormComponent implements OnIni
     this.productRepository.create(this.form.value).subscribe(
       response => {
         this.router.navigate(['/products']);
-        this.toast.error('The product was created successfully!');
+        this.toast.success('The product was created successfully!');
       },
       error => {
         //
@@ -52,7 +52,7 @@ export class ProductFormComponent extends AbstractFormComponent implements OnIni
     this.productRepository.update(this.resourceId, this.form.value).subscribe(
       response => {
         this.router.navigate(['/products']);
-        this.toast.error('The product was updated successfully!');
+        this.toast.success('The product was updated successfully!');
       },
       error => {
         //
